@@ -2,8 +2,6 @@
 
 Ce fichier répertorie les licences des composants tiers utilisés par le projet (tels que les polices d'écriture).
 
-```
-
 ### SIL Open Font License (OFL), TEXTE INTEGRAL
 ```
 #### Font 1
