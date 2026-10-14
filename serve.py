@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# !! USAGE DE L'IA DANS CE FICHIÉ !!
+# !! USAGE DE L'IA DANS CE FICHIER !!
 
 """Petit serveur de développement qui sert les pages pour voir le site.
 
