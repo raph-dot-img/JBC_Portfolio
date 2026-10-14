@@ -15,7 +15,6 @@ services:
       # Fichiers du site, montés un par un pour ne rien exposer d'autre
       # (.env, ressources/ et serve.py restent en dehors du conteneur)
       - ./index.html:/usr/share/nginx/html/index.html:ro
-      - ./googlefcec097abc8fdb0a.html:/usr/share/nginx/html/googlefcec097abc8fdb0a.html:ro
       - ./confidentialite.html:/usr/share/nginx/html/confidentialite.html:ro
       - ./style.css:/usr/share/nginx/html/style.css:ro
       - ./script.js:/usr/share/nginx/html/script.js:ro
@@ -26,9 +25,6 @@ services:
       - ./erreurs:/usr/share/nginx/html/erreurs:ro
       - ./LICENSE.html
       - ./LICENSE
-      # Version anglaise, dossier entier : elle ne contient que des
-      # fichiers destinés au site (pages + erreurs/)
-      - ./en:/usr/share/nginx/html/en:ro
       # Journal d'accès persistant, hors de la racine web
       - ./logs:/var/log/portfolio
 
