@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Pages d'erreur 
+Disallow: /erreurs/
+
+Sitemap: https://caignec.eu/sitemap.xml
+
+# Arrete de fouiller, il n'y a rien a voir ici.
+#
+#     /\_/\
+#    ( o.o )   < kitty cat
+#     > ^ <

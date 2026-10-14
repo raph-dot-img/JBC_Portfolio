@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://caignec.eu/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://caignec.eu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://caignec.eu/"/>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://caignec.eu/confidentialite.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://canevet.eu/confidentialite.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://canevet.eu/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://canevet.eu/confidentialite.html"/>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://caignec.eu/en/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://caignec.eu/confidentialite.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://caignec.eu/confidentialite.html"/>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>
