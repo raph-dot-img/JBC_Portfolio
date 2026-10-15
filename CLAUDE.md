@@ -17,7 +17,8 @@ Le contenu vient de son CV : `assets/CV_Jean-Baptiste_CAIGNEC.pdf`. Tout le site
 
 - **Aucune ressource externe** (police, CDN, analytics...) : la CSP de `nginx/securite.conf` n'autorise que `'self'`, plus `https://formspree.io` pour le formulaire. Pas de style ou de script inline (attributs `style=""` compris) : ils seraient bloqués.
 - Le site doit fonctionner sans JavaScript (le formulaire se replie sur un envoi classique).
-- `confidentialite.html` est rédigée par le propriétaire du dépôt : ne pas la remplir.
+- Le texte de `confidentialite.html` est fourni par le propriétaire du dépôt : n'en changer le fond qu'à sa demande.
+- Le site vouvoie le visiteur (formulaire, messages du script).
 - Ne jamais versionner `.env` (seul `.env.example` l'est).
 - Pas de version anglaise : il n'y a pas de `/en/`.
 
