@@ -681,10 +681,10 @@ main {
   margin: 0 auto;
   padding: 2rem 1.25rem 2.5rem;
   border-top: 1px solid var(--bordure);
-  display: flex;
-  flex-wrap: wrap;
+  /* Trois colonnes : copyright, code source au centre, liens légaux */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   gap: 0.8rem 1.5rem;
   font-size: 0.85rem;
   color: var(--texte-doux);
@@ -697,7 +697,12 @@ main {
 .pied nav {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 1.2rem;
+}
+
+.lien-source {
+  text-align: center;
 }
 
 .pied a {
@@ -709,7 +714,7 @@ main {
 }
 
 .mention-ia {
-  flex-basis: 100%;
+  grid-column: 1 / -1;
   font-size: 0.68rem;
   opacity: 0.7;
 }
@@ -863,6 +868,16 @@ main {
 }
 
 @media (max-width: 720px) {
+  .pied {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .pied nav {
+    justify-content: center;
+  }
+
   .grille,
   .formulaire {
     grid-template-columns: 1fr;
