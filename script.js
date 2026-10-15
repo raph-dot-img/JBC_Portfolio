@@ -64,7 +64,7 @@ if (formulaire) {
 
     // Adresse non injectée par nginx (serveur de dev sans .env, par exemple)
     if (!formulaire.action.startsWith("https://formspree.io/")) {
-      afficher("Le formulaire n'est pas encore configuré. Réessaie plus tard.", "erreur");
+      afficher("Le formulaire n'est pas encore configuré. Réessayez plus tard.", "erreur");
       return;
     }
 
@@ -80,12 +80,12 @@ if (formulaire) {
 
       if (reponse.ok) {
         formulaire.reset();
-        afficher("Message envoyé ! Je te réponds dès que possible.", "ok");
+        afficher("Message envoyé ! Je vous réponds dès que possible.", "ok");
       } else {
-        afficher("L'envoi a échoué. Vérifie les champs et réessaie.", "erreur");
+        afficher("L'envoi a échoué. Vérifiez les champs et réessayez.", "erreur");
       }
     } catch {
-      afficher("Connexion impossible. Réessaie dans un instant.", "erreur");
+      afficher("Connexion impossible. Réessayez dans un instant.", "erreur");
     } finally {
       bouton.disabled = false;
     }

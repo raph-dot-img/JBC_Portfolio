@@ -746,6 +746,31 @@ main {
   margin-bottom: 1rem;
 }
 
+.page-texte .panneau h3 {
+  margin: 1.6rem 0 0.6rem;
+  color: var(--cyan);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.page-texte .liste-competences {
+  margin-bottom: 1rem;
+}
+
+.chapo {
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--jaune);
+  font-size: 1.05rem;
+}
+
+.encart {
+  padding: 0.8rem 1rem;
+  border: 1px dashed rgba(255, 232, 26, 0.4);
+  background: rgba(255, 232, 26, 0.05);
+}
+
 .texte-licence {
   margin: 1rem 0 0;
   padding: 1rem;
