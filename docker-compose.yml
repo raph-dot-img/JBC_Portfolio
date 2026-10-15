@@ -4,33 +4,40 @@ services:
     container_name: jbc_portfolio
     restart: unless-stopped
     ports:
-      # Accès local uniquement. L'exposition publique passe par frpc.
+      # Accès local uniquement (tests sur la machine). L'exposition publique
+      # passe par frpc, qui joint nginx directement par le réseau Docker.
       - "127.0.0.1:45888:80"
+    environment:
+      # Injectée dans index.html par nginx (voir nginx/default.conf)
+      FORMSPREE_ENDPOINT: ${FORMSPREE_ENDPOINT:?FORMSPREE_ENDPOINT manquant dans .env}
+      # Seule cette variable est remplacée dans le modèle de configuration
+      NGINX_ENVSUBST_FILTER: "^FORMSPREE_"
     volumes:
-      # Configuration du serveur
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      # Configuration du serveur : monté comme *modèle*, l'image nginx le
+      # recopie dans conf.d/ au démarrage en y injectant FORMSPREE_ENDPOINT.
+      - ./nginx/default.conf:/etc/nginx/templates/default.conf.template:ro
       # En-têtes de sécurité partagés, hors de conf.d/ : nginx inclut tout
       # ce dossier dans le bloc http, où ces directives n'auraient pas cours.
       - ./nginx/securite.conf:/etc/nginx/securite.conf:ro
       # Fichiers du site, montés un par un pour ne rien exposer d'autre
-      # (.env, ressources/ et serve.py restent en dehors du conteneur)
+      # (.env, frp/, nginx/, serve.py... restent en dehors du conteneur).
+      # Toute nouvelle page se déclare ici ET dans RACINES_PUBLIQUES (serve.py).
       - ./index.html:/usr/share/nginx/html/index.html:ro
       - ./confidentialite.html:/usr/share/nginx/html/confidentialite.html:ro
+      - ./CGU.html:/usr/share/nginx/html/CGU.html:ro
+      - ./LICENSE:/usr/share/nginx/html/LICENSE:ro
       - ./style.css:/usr/share/nginx/html/style.css:ro
       - ./script.js:/usr/share/nginx/html/script.js:ro
       - ./robots.txt:/usr/share/nginx/html/robots.txt:ro
-      - ./.well-known:/usr/share/nginx/html/.well-known:ro
       - ./sitemap.xml:/usr/share/nginx/html/sitemap.xml:ro
       - ./assets:/usr/share/nginx/html/assets:ro
       - ./erreurs:/usr/share/nginx/html/erreurs:ro
-      - ./LICENSE.html
-      - ./LICENSE
       # Journal d'accès persistant, hors de la racine web
       - ./logs:/var/log/portfolio
 
   frpc:
     image: snowdreamtech/frpc:latest
-    container_name: portfolio-frpc
+    container_name: jbc_portfolio_frpc
     restart: unless-stopped
     depends_on:
       - portfolio

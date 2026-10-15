@@ -17,11 +17,9 @@
 <meta name="description" content="Portfolio de Jean-Baptiste, élève en Bac Pro CIEL au Lycée Likès à Quimper.">
 <meta name="author" content="Jean-Baptiste Caignec">
 <link rel="canonical" href="https://caignec.eu/">
-<link rel="alternate" hreflang="fr" href="https://caignec.eu/">
-<link rel="alternate" hreflang="en" href="https://caignec.eu/en/">
-<link rel="alternate" hreflang="x-default" href="https://caignec.eu/">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#1f6feb">
+<meta name="theme-color" content="#08090d">
+<meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jean-Baptiste Caignec">
 <meta property="og:locale" content="fr_FR">
@@ -30,8 +28,11 @@
 <meta property="og:description" content="Élève en Bac Pro CIEL au Lycée Likès à Quimper.">
 <meta name="twitter:card" content="summary">
 
-<!-- Police du site, prechargee : sans cela elle n'est demandee qu'apres le CSS. -->
-<!-- à faire -->
+<!-- Polices du site, préchargées : sans cela elles ne sont demandées qu'après le CSS. -->
+<link rel="preload" href="/assets/polices/orbitron.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/polices/space-mono.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/style.css">
+<script src="/script.js" defer></script>
 
 <script type="application/ld+json">
 {
@@ -62,5 +63,167 @@
 </head>
 
 <body>
-  <!-- à faire -->
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <header class="entete">
+    <div class="entete-interieur">
+      <a class="logo" href="/" aria-label="Jean-Baptiste Caignec, accueil"></a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#profil">Profil</a>
+        <a href="#formation">Formation</a>
+        <a href="#experience">Expérience</a>
+        <a href="#competences">Compétences</a>
+      </nav>
+      <div class="entete-actions">
+        <a class="btn btn-primaire" href="/assets/CV_Jean-Baptiste_CAIGNEC.pdf" download>Télécharger mon CV</a>
+        <a class="btn btn-secondaire" href="#contact">Me contacter</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <section class="hero" aria-labelledby="nom">
+      <div class="hero-texte">
+        <p class="surtitre">// Quimper, Finistère</p>
+        <h1 id="nom" class="glitch" data-text="Jean-Baptiste Caignec">Jean-Baptiste Caignec</h1>
+        <p class="hero-sous-titre">Élève en Bac Pro <strong>CIEL</strong></p>
+        <p class="hero-ligne"><span class="invite">&gt;</span> <span class="tape" data-texte="cybersécurité · informatique &amp; réseaux · électronique">cybersécurité · informatique &amp; réseaux · électronique</span><span class="curseur" aria-hidden="true"></span></p>
+      </div>
+
+      <div class="terminal" aria-label="Résumé façon terminal">
+        <div class="terminal-barre" aria-hidden="true"><span></span><span></span><span></span><em>jbc@likes:~</em></div>
+        <pre class="terminal-corps"><span class="invite">$</span> whoami
+jean-baptiste.caignec
+<span class="invite">$</span> cat statut.txt
+Élève en Bac Pro CIEL
+Lycée Likès, Quimper
+<span class="invite">$</span> ls competences/
+hardware/  os/  soudure_pcb/
+mesures/   python/</pre>
+      </div>
+    </section>
+
+    <section id="profil" class="panneau panneau-large revele" aria-labelledby="titre-profil">
+      <h2 id="titre-profil"><span class="index">01</span> Motivation</h2>
+      <p>
+        En tant que lycéen en Bac Pro CIEL (Cybersécurité, Informatique et réseaux, Électronique),
+        je souhaiterais découvrir les métiers qui touchent à ma formation.
+      </p>
+      <p>
+        Durant mon temps libre, je développe des outils en <span class="surligne">Python</span>.
+        Je fais aussi de la modération et de la rédaction de pages <span class="surligne">Wikipédia</span>.
+      </p>
+    </section>
+
+    <div class="grille">
+      <section id="formation" class="panneau revele" aria-labelledby="titre-formation">
+        <h2 id="titre-formation"><span class="index">02</span> Formation</h2>
+        <ul class="liste-chrono">
+          <li>
+            <span class="puce puce-active">En cours</span>
+            <h3>Bac professionnel CIEL</h3>
+            <p>Lycée Likès, Quimper</p>
+          </li>
+          <li>
+            <span class="puce puce-active">En cours</span>
+            <h3>Formation Cisco IT Essentials</h3>
+          </li>
+          <li>
+            <span class="puce">Obtenu en 2024</span>
+            <h3>Brevet des collèges</h3>
+          </li>
+        </ul>
+      </section>
+
+      <section id="experience" class="panneau revele" aria-labelledby="titre-experience">
+        <h2 id="titre-experience"><span class="index">03</span> Expérience</h2>
+        <ul class="liste-chrono">
+          <li>
+            <span class="puce"><time datetime="2026-06">Juin 2026</time></span>
+            <h3>Stage d'observation</h3>
+            <p>Plastimo, Lorient</p>
+          </li>
+          <li>
+            <span class="puce"><time datetime="2025-12">Décembre 2025</time></span>
+            <h3>Stage d'observation</h3>
+            <p>GUELT, Lorient</p>
+          </li>
+        </ul>
+      </section>
+
+      <section id="competences" class="panneau revele" aria-labelledby="titre-competences">
+        <h2 id="titre-competences"><span class="index">04</span> Compétences</h2>
+        <ul class="liste-competences">
+          <li>Démontage et montage d'ordinateur</li>
+          <li>Installation et configuration d'un système d'exploitation</li>
+          <li>Bases en soudure sur carte PCB</li>
+          <li>Mesure de valeurs électroniques (résistivité, tension, etc.)</li>
+        </ul>
+      </section>
+
+      <section id="langues" class="panneau revele" aria-labelledby="titre-langues">
+        <h2 id="titre-langues"><span class="index">05</span> Langues</h2>
+        <ul class="liste-langues">
+          <li>
+            <div class="langue-entete"><span>Anglais</span><span class="niveau">B1</span></div>
+            <div class="jauge" role="img" aria-label="Niveau B1 sur l'échelle européenne, de A1 à C2">
+              <i class="plein"></i><i class="plein"></i><i class="plein"></i><i></i><i></i><i></i>
+            </div>
+          </li>
+          <li>
+            <div class="langue-entete"><span>Italien</span><span class="niveau">A1</span></div>
+            <div class="jauge" role="img" aria-label="Niveau A1 sur l'échelle européenne, de A1 à C2">
+              <i class="plein"></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </li>
+        </ul>
+        <p class="legende">Échelle européenne (CECRL), de A1 à C2.</p>
+      </section>
+    </div>
+
+    <section id="contact" class="panneau panneau-large revele" aria-labelledby="titre-contact">
+      <h2 id="titre-contact"><span class="index">06</span> Contact</h2>
+      <p>Une question, une proposition de stage ? Laisse-moi un message, je te réponds dès que possible.</p>
+
+      <!-- L'adresse Formspree est injectée par nginx (variable FORMSPREE_ENDPOINT du .env). -->
+      <form class="formulaire" action="__FORMSPREE_ENDPOINT__" method="POST">
+        <div class="champ">
+          <label for="f-nom">Nom</label>
+          <input id="f-nom" name="nom" type="text" autocomplete="name" required maxlength="100">
+        </div>
+        <div class="champ">
+          <label for="f-email">E-mail</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="200">
+        </div>
+        <div class="champ champ-large">
+          <label for="f-message">Message</label>
+          <textarea id="f-message" name="message" rows="6" required maxlength="5000"></textarea>
+        </div>
+        <!-- Pot de miel anti-spam : invisible pour les humains, rempli par les bots. -->
+        <div class="pot-de-miel" aria-hidden="true">
+          <label for="f-gotcha">Ne pas remplir</label>
+          <input id="f-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <input type="hidden" name="_subject" value="Nouveau message depuis caignec.eu">
+        <div class="formulaire-pied">
+          <button class="btn btn-primaire" type="submit">Envoyer</button>
+          <p class="formulaire-statut" role="status" aria-live="polite"></p>
+        </div>
+        <p class="legende">
+          Le message est transmis via le service Formspree.
+          Voir la <a href="/confidentialite.html">politique de confidentialité</a>.
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pied">
+    <p>© <span class="annee">2026</span> Jean-Baptiste Caignec</p>
+    <nav aria-label="Liens légaux">
+      <a href="/confidentialite.html">Politique de confidentialité</a>
+      <a href="/CGU.html">CGU</a>
+    </nav>
+    <p class="mention-ia">Utilisation de l'IA dans le design et le script</p>
+  </footer>
 </body>
+</html>

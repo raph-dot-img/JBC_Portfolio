@@ -1,0 +1,968 @@
+/* ==========================================================================
+   Portfolio de Jean-Baptiste Caignec : thème « cyberpunk » léger.
+   Jaune néon (repris du favicon), cyan en accent, magenta pour les glitchs.
+   Aucune ressource externe : polices auto-hébergées dans assets/polices/.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Orbitron";
+  src: url("/assets/polices/orbitron.woff2") format("woff2");
+  font-weight: 400 900; /* police variable */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  src: url("/assets/polices/space-mono.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --fond: #08090d;
+  --fond-panneau: rgba(16, 18, 26, 0.86);
+  --texte: #e6e8ef;
+  --texte-doux: #9aa0b4;
+  --jaune: #ffe81a;
+  --cyan: #00f0ff;
+  --magenta: #ff2a6d;
+  --bordure: rgba(0, 240, 255, 0.25);
+  --coin: 14px;
+  --police-titre: "Orbitron", "Segoe UI", sans-serif;
+  --police-texte: "Space Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --largeur: 1100px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--fond);
+  /* Quadrillage discret façon « grille de la ville » */
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.045) 1px, transparent 1px),
+    radial-gradient(ellipse at 80% -10%, rgba(255, 42, 109, 0.14), transparent 55%),
+    radial-gradient(ellipse at -10% 40%, rgba(0, 240, 255, 0.10), transparent 50%);
+  background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%;
+  background-attachment: fixed;
+  color: var(--texte);
+  font-family: var(--police-texte);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Lignes de balayage très légères par-dessus tout le site */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.018) 0 1px,
+    transparent 1px 3px
+  );
+  z-index: 100;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--police-titre);
+  line-height: 1.2;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--cyan);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--jaune);
+}
+
+:focus-visible {
+  outline: 2px solid var(--jaune);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--jaune);
+  color: var(--fond);
+}
+
+.lien-evitement {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  z-index: 200;
+  padding: 0.5rem 1rem;
+  background: var(--jaune);
+  color: var(--fond);
+}
+
+.lien-evitement:focus {
+  top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Logo : le SVG (lettres noires) sert de masque, coloré en jaune par le CSS.
+   -------------------------------------------------------------------------- */
+.logo {
+  display: block;
+  flex: none;
+  width: 92px;
+  height: 42px;
+  background: var(--jaune);
+  -webkit-mask: url("/assets/logo_nobg.svg") center / 100% auto no-repeat;
+  mask: url("/assets/logo_nobg.svg") center / 100% auto no-repeat;
+  filter: drop-shadow(0 0 6px rgba(255, 232, 26, 0.45));
+  transition: background-color 0.2s;
+}
+
+.logo:hover {
+  background: var(--cyan);
+}
+
+/* --------------------------------------------------------------------------
+   Boutons : coin coupé, typo Orbitron.
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  border: 0;
+  font-family: var(--police-titre);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  transition: transform 0.15s, background-color 0.15s, color 0.15s;
+}
+
+.btn:hover {
+  transform: translate(-1px, -1px);
+}
+
+.btn:active {
+  transform: translate(1px, 1px);
+}
+
+.btn-primaire {
+  background: var(--jaune);
+  color: var(--fond);
+}
+
+.btn-primaire:hover {
+  background: var(--cyan);
+  color: var(--fond);
+}
+
+.btn-secondaire {
+  /* Bordure simulée : le clip-path couperait une vraie bordure */
+  box-shadow: inset 0 0 0 2px var(--cyan);
+  background: transparent;
+  color: var(--cyan);
+}
+
+.btn-secondaire:hover {
+  background: var(--cyan);
+  color: var(--fond);
+}
+
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* --------------------------------------------------------------------------
+   En-tête
+   -------------------------------------------------------------------------- */
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(8, 9, 13, 0.82);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--bordure);
+}
+
+.entete::after {
+  /* Fin liseré jaune-magenta sous l'en-tête */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--jaune), transparent 30%, transparent 70%, var(--magenta));
+  opacity: 0.6;
+}
+
+.entete-interieur {
+  max-width: var(--largeur);
+  margin: 0 auto;
+  padding: 0.8rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav {
+  display: flex;
+  gap: 1.4rem;
+  margin-right: auto;
+  font-size: 0.85rem;
+}
+
+.nav a {
+  color: var(--texte-doux);
+  text-decoration: none;
+}
+
+.nav a::before {
+  content: "/";
+  color: var(--magenta);
+  margin-right: 0.3rem;
+}
+
+.nav a:hover {
+  color: var(--jaune);
+}
+
+.entete-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Contenu principal
+   -------------------------------------------------------------------------- */
+main {
+  max-width: var(--largeur);
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 3rem;
+  padding: 5rem 0 4rem;
+}
+
+.surtitre {
+  color: var(--magenta);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.8rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--jaune);
+  text-shadow: 0 0 18px rgba(255, 232, 26, 0.35);
+  margin-bottom: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.hero-sous-titre {
+  font-family: var(--police-titre);
+  font-size: clamp(1rem, 2.4vw, 1.35rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.hero-sous-titre strong {
+  color: var(--cyan);
+}
+
+.hero-ligne {
+  color: var(--texte-doux);
+  min-height: 1.7em;
+}
+
+.invite {
+  color: var(--magenta);
+}
+
+.curseur {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: var(--jaune);
+  animation: clignote 1s steps(1) infinite;
+}
+
+@keyframes clignote {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Effet glitch : uniquement au survol, pour rester sobre */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch::before {
+  color: var(--cyan);
+  text-shadow: none;
+}
+
+.glitch::after {
+  color: var(--magenta);
+  text-shadow: none;
+}
+
+.glitch:hover::before {
+  opacity: 0.8;
+  animation: glitch-a 0.4s steps(2) infinite;
+}
+
+.glitch:hover::after {
+  opacity: 0.8;
+  animation: glitch-b 0.4s steps(2) infinite;
+}
+
+@keyframes glitch-a {
+  0% { transform: translate(-3px, 1px); clip-path: inset(10% 0 60% 0); }
+  50% { transform: translate(3px, -1px); clip-path: inset(55% 0 20% 0); }
+  100% { transform: translate(-2px, 0); clip-path: inset(30% 0 45% 0); }
+}
+
+@keyframes glitch-b {
+  0% { transform: translate(3px, -1px); clip-path: inset(65% 0 5% 0); }
+  50% { transform: translate(-3px, 1px); clip-path: inset(5% 0 75% 0); }
+  100% { transform: translate(2px, 0); clip-path: inset(40% 0 30% 0); }
+}
+
+/* Encart « terminal » du hero */
+.terminal {
+  background: rgba(5, 6, 9, 0.9);
+  border: 1px solid var(--bordure);
+  box-shadow: 0 0 0 1px rgba(255, 42, 109, 0.12), 0 18px 50px rgba(0, 0, 0, 0.5);
+  clip-path: polygon(0 0, calc(100% - var(--coin)) 0, 100% var(--coin), 100% 100%, 0 100%);
+}
+
+.terminal-barre {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid var(--bordure);
+  font-size: 0.75rem;
+  color: var(--texte-doux);
+}
+
+.terminal-barre span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--magenta);
+}
+
+.terminal-barre span:nth-child(2) {
+  background: var(--jaune);
+}
+
+.terminal-barre span:nth-child(3) {
+  background: var(--cyan);
+}
+
+.terminal-barre em {
+  font-style: normal;
+  margin-left: auto;
+}
+
+.terminal-corps {
+  margin: 0;
+  padding: 1rem 1.1rem 1.2rem;
+  font-family: var(--police-texte);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--cyan);
+  white-space: pre-wrap;
+}
+
+/* --------------------------------------------------------------------------
+   Panneaux de section
+   -------------------------------------------------------------------------- */
+.grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.panneau {
+  position: relative;
+  padding: 1.8rem 1.8rem 1.5rem;
+  background: var(--fond-panneau);
+  border: 1px solid var(--bordure);
+  clip-path: polygon(0 0, calc(100% - var(--coin)) 0, 100% var(--coin), 100% 100%, var(--coin) 100%, 0 calc(100% - var(--coin)));
+}
+
+.panneau::before {
+  /* Petit trait jaune en haut à gauche, comme une étiquette */
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 64px;
+  height: 3px;
+  background: var(--jaune);
+}
+
+.panneau-large {
+  margin: 1.5rem 0;
+}
+
+.panneau h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  font-size: clamp(1.1rem, 2.6vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--jaune);
+  margin-bottom: 1.3rem;
+}
+
+.panneau h2 .index {
+  font-size: 0.75em;
+  color: var(--cyan);
+}
+
+.panneau h2 .index::after {
+  content: " //";
+  color: var(--magenta);
+}
+
+.panneau h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--texte);
+  margin: 0.3rem 0 0.2rem;
+}
+
+.panneau p:last-child {
+  margin-bottom: 0;
+}
+
+.surligne {
+  color: var(--jaune);
+}
+
+/* Listes chronologiques (formation, expérience) */
+.liste-chrono {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--bordure);
+}
+
+.liste-chrono li {
+  position: relative;
+  padding: 0 0 1.4rem 1.3rem;
+}
+
+.liste-chrono li:last-child {
+  padding-bottom: 0;
+}
+
+.liste-chrono li::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 0.55rem;
+  width: 9px;
+  height: 9px;
+  background: var(--fond);
+  border: 1px solid var(--cyan);
+  transform: rotate(45deg);
+}
+
+.liste-chrono p {
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.puce {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  border: 1px solid var(--bordure);
+}
+
+.puce-active {
+  color: var(--jaune);
+  border-color: rgba(255, 232, 26, 0.4);
+}
+
+.puce-active::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 0.45rem;
+  vertical-align: 0.1em;
+  border-radius: 50%;
+  background: var(--jaune);
+  box-shadow: 0 0 8px var(--jaune);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Compétences */
+.liste-competences {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.liste-competences li {
+  position: relative;
+  padding: 0.55rem 0 0.55rem 1.6rem;
+  border-bottom: 1px dashed rgba(0, 240, 255, 0.15);
+}
+
+.liste-competences li:last-child {
+  border-bottom: 0;
+}
+
+.liste-competences li::before {
+  content: ">";
+  position: absolute;
+  left: 0.2rem;
+  color: var(--magenta);
+}
+
+/* Langues : jauge en 6 segments (A1 à C2) */
+.liste-langues {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.liste-langues li + li {
+  margin-top: 1.2rem;
+}
+
+.langue-entete {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.niveau {
+  font-family: var(--police-titre);
+  font-weight: 700;
+  color: var(--jaune);
+}
+
+.jauge {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+
+.jauge i {
+  height: 8px;
+  background: rgba(0, 240, 255, 0.12);
+  transform: skewX(-20deg);
+}
+
+.jauge i.plein {
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+}
+
+.legende {
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}
+
+/* --------------------------------------------------------------------------
+   Formulaire de contact
+   -------------------------------------------------------------------------- */
+.formulaire {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.champ-large,
+.formulaire-pied,
+.formulaire .legende {
+  grid-column: 1 / -1;
+}
+
+.champ label {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.champ label::before {
+  content: "> ";
+  color: var(--magenta);
+}
+
+.champ input,
+.champ textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background: rgba(5, 6, 9, 0.85);
+  color: var(--texte);
+  border: 1px solid var(--bordure);
+  border-radius: 0;
+  font: inherit;
+  font-size: 0.95rem;
+  caret-color: var(--jaune);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.champ textarea {
+  resize: vertical;
+  min-height: 9rem;
+}
+
+.champ input:focus,
+.champ textarea:focus {
+  outline: none;
+  border-color: var(--jaune);
+  box-shadow: 0 0 0 1px var(--jaune), 0 0 14px rgba(255, 232, 26, 0.18);
+}
+
+.pot-de-miel {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.formulaire-pied {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.formulaire-statut {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.formulaire-statut.ok {
+  color: var(--cyan);
+}
+
+.formulaire-statut.erreur {
+  color: var(--magenta);
+}
+
+/* --------------------------------------------------------------------------
+   Pied de page
+   -------------------------------------------------------------------------- */
+.pied {
+  max-width: var(--largeur);
+  margin: 0 auto;
+  padding: 2rem 1.25rem 2.5rem;
+  border-top: 1px solid var(--bordure);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem 1.5rem;
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+}
+
+.pied p {
+  margin: 0;
+}
+
+.pied nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.pied a {
+  color: var(--texte-doux);
+}
+
+.pied a:hover {
+  color: var(--jaune);
+}
+
+.mention-ia {
+  flex-basis: 100%;
+  font-size: 0.68rem;
+  opacity: 0.7;
+}
+
+/* Apparition douce des panneaux au défilement (activée par script.js) */
+.js .revele {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.js .revele.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Pages secondaires (CGU) et pages d'erreur
+   -------------------------------------------------------------------------- */
+.page-texte main {
+  max-width: 860px;
+  padding-top: 3rem;
+}
+
+.page-texte h1 {
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--jaune);
+  margin-bottom: 1.5rem;
+}
+
+.page-texte .panneau h2 {
+  margin-bottom: 1rem;
+}
+
+.texte-licence {
+  margin: 1rem 0 0;
+  padding: 1rem;
+  max-height: 26rem;
+  overflow: auto;
+  background: rgba(5, 6, 9, 0.85);
+  border: 1px solid var(--bordure);
+  font-family: var(--police-texte);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  color: var(--texte-doux);
+}
+
+.page-erreur {
+  display: flex;
+  flex-direction: column;
+}
+
+.erreur {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.4rem;
+  padding: 3rem 1.25rem;
+}
+
+.erreur .logo {
+  margin-bottom: 2rem;
+}
+
+.erreur-code {
+  margin: 0;
+  font-family: var(--police-titre);
+  font-size: clamp(4.5rem, 22vw, 9rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--jaune);
+  text-shadow: 0 0 24px rgba(255, 232, 26, 0.35);
+}
+
+.erreur h1 {
+  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  margin-bottom: 0.8rem;
+}
+
+.erreur p:not(.erreur-code):not(.erreur-ip) {
+  max-width: 34rem;
+  color: var(--texte-doux);
+}
+
+.erreur .btn {
+  margin-top: 1rem;
+}
+
+.erreur-ip {
+  font-size: 1.05rem;
+  color: var(--magenta);
+}
+
+.erreur-ip strong {
+  color: var(--jaune);
+}
+
+.chat {
+  display: block;
+  width: min(310px, 80vw);
+  height: auto;
+  margin-top: 1rem;
+  border: 1px solid var(--bordure);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .nav {
+    display: none;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 3.5rem 0 2.5rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .grille,
+  .formulaire {
+    grid-template-columns: 1fr;
+  }
+
+  .panneau {
+    padding: 1.5rem 1.2rem 1.3rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .entete-interieur {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.7rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .logo {
+    width: 74px;
+    height: 34px;
+  }
+
+  .entete-actions {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+  }
+
+  main {
+    padding: 0 1rem 2rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.7rem, 9vw, 2.2rem);
+  }
+}
+
+@media (max-width: 380px) {
+  .entete-actions {
+    width: 100%;
+  }
+
+  .entete-actions .btn {
+    flex: 1;
+    min-width: 0;
+    padding: 0.6rem 0.5rem;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* Moins d'animations pour qui le demande */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .js .revele {
+    opacity: 1;
+    transform: none;
+  }
+}
