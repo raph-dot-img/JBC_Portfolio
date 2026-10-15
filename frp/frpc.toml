@@ -15,7 +15,7 @@ log.level = "info"
 loginFailExit = false
 
 [[proxies]]
-name = "portfolio"
+name = "portfolio_jb"
 type = "tcp"
 # Nom du service dans la stack : frpc joint nginx par le réseau Docker,
 # sans qu'aucun port n'ait besoin d'être publié sur l'hôte.
