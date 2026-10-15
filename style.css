@@ -272,10 +272,6 @@ main {
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 3rem;
   padding: 5rem 0 4rem;
 }
 
@@ -378,54 +374,6 @@ main {
   0% { transform: translate(3px, -1px); clip-path: inset(65% 0 5% 0); }
   50% { transform: translate(-3px, 1px); clip-path: inset(5% 0 75% 0); }
   100% { transform: translate(2px, 0); clip-path: inset(40% 0 30% 0); }
-}
-
-/* Encart « terminal » du hero */
-.terminal {
-  background: rgba(5, 6, 9, 0.9);
-  border: 1px solid var(--bordure);
-  box-shadow: 0 0 0 1px rgba(255, 42, 109, 0.12), 0 18px 50px rgba(0, 0, 0, 0.5);
-  clip-path: polygon(0 0, calc(100% - var(--coin)) 0, 100% var(--coin), 100% 100%, 0 100%);
-}
-
-.terminal-barre {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0.5rem 0.8rem;
-  border-bottom: 1px solid var(--bordure);
-  font-size: 0.75rem;
-  color: var(--texte-doux);
-}
-
-.terminal-barre span {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--magenta);
-}
-
-.terminal-barre span:nth-child(2) {
-  background: var(--jaune);
-}
-
-.terminal-barre span:nth-child(3) {
-  background: var(--cyan);
-}
-
-.terminal-barre em {
-  font-style: normal;
-  margin-left: auto;
-}
-
-.terminal-corps {
-  margin: 0;
-  padding: 1rem 1.1rem 1.2rem;
-  font-family: var(--police-texte);
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--cyan);
-  white-space: pre-wrap;
 }
 
 /* --------------------------------------------------------------------------
@@ -885,8 +833,6 @@ main {
   }
 
   .hero {
-    grid-template-columns: 1fr;
-    gap: 2rem;
     padding: 3.5rem 0 2.5rem;
   }
 }
