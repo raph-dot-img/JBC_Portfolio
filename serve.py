@@ -2,19 +2,19 @@
 
 # !! USAGE DE L'IA DANS CE FICHIER !!
 
-"""Petit serveur de développement qui sert les pages pour voir le site.
+"""Petit serveur de développement pour voir le site sans Docker. Pas pour la prod !
+
+Il reproduit ce que fait nginx en production :
+- pages d'erreur personnalisées du dossier erreurs/ ;
+- 418 + chat smug sur les chemins que visent les scanners, avec l'IP du client ;
+- adresse Formspree injectée dans index.html depuis le fichier .env (si présent) ;
+- seuls les fichiers publics du site sont servis.
 
 Usage : python3 serve.py [port]
 """
-#!/usr/bin/env python3
-"""Petit serveur de développement qui sert les pages d'erreur personnalisées.
 
-Le module http.server de base renvoie ses propres pages d'erreur, ce qui empêche
-de tester celles du dossier erreurs/. Ce script les branche à la place.
-
-Usage : python3 serve.py [port]
-"""
-
+import html
+import os
 import re
 import sys
 from functools import partial
@@ -23,21 +23,22 @@ from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent
 DOSSIER_ERREURS = RACINE / "erreurs"
-DOSSIER_ERREURS_EN = RACINE / "en" / "errors"
 
-# Mêmes chemins que les blocs « scanners » de nginx/default.conf : les deux
+# Mêmes chemins que le bloc « scanners » de nginx/default.conf : les deux
 # listes doivent rester identiques, sinon l'easter egg ne se voit qu'en Docker.
-# Le préfixe /en/ est optionnel : /.env et /en/.env valent tous les deux 418.
 CHEMINS_SCANNERS = re.compile(
-    r"^/(?:en/)?(?:admin|administrator|wp-admin|wp-login\.php|cpanel|panel|manage|management"
+    r"^/(?:admin|administrator|wp-admin|wp-login\.php|cpanel|panel|manage|management"
     r"|backend|dashboard|\.env|config\.php|config\.json|wp-config\.php|\.git|\.aws"
     r"|database\.yml|wp-content|wp-includes|xmlrpc\.php|joomla|drupal|typo3|laravel"
     r"|phpinfo\.php|info\.php|server-status|server-info|debug|test\.php|actuator"
     r"|phpmyadmin|pma|adminer\.php|dbadmin|\.ssh|backup\.(?:sql|zip)|\.htpasswd"
-    r"|\.htaccess|api|graphql|swagger)(?:[/.-]|$)",
+    r"|\.htaccess|api|graphql|swagger|docker-compose\.ya?ml|\.docker|frpc?\.toml"
+    r"|serve\.py|nginx|frp|logs)(?:[/.-]|$)",
     re.IGNORECASE,
 )
 
+# Balise SSI que nginx remplace par l'IP du client dans erreurs/418.html
+BALISE_IP = re.compile(r"<!--#\s*echo\s+var=\"remote_addr\"[^>]*-->")
 
 # Même principe que les volumes de docker-compose.yml : seuls les fichiers
 # destinés au site sont servis. Sans cette liste, le serveur de développement
@@ -46,21 +47,49 @@ CHEMINS_SCANNERS = re.compile(
 RACINES_PUBLIQUES = {
     "index.html",
     "confidentialite.html",
-    "style.css",
-    "script.js",
     "CGU.html",
     "LICENSE",
+    "style.css",
+    "script.js",
     "robots.txt",
     "sitemap.xml",
-    ".well-known",
     "assets",
     "erreurs",
 }
 
 
+def lire_formspree():
+    """FORMSPREE_ENDPOINT depuis l'environnement, sinon depuis le fichier .env."""
+    valeur = os.environ.get("FORMSPREE_ENDPOINT")
+    fichier = RACINE / ".env"
+    if not valeur and fichier.is_file():
+        for ligne in fichier.read_text(encoding="utf-8").splitlines():
+            cle, _, reste = ligne.partition("=")
+            if cle.strip() == "FORMSPREE_ENDPOINT":
+                valeur = reste.strip().strip("\"'")
+    return valeur or "__FORMSPREE_ENDPOINT__"
+
+
+FORMSPREE = lire_formspree()
+
+
 class Handler(SimpleHTTPRequestHandler):
+    extensions_map = {
+        **SimpleHTTPRequestHandler.extensions_map,
+        ".woff2": "font/woff2",
+        ".svg": "image/svg+xml",
+    }
+
+    def chemin(self):
+        return self.path.split("?", 1)[0].split("#", 1)[0]
+
+    def guess_type(self, path):
+        if Path(path).name == "LICENSE":
+            return "text/plain; charset=utf-8"
+        return super().guess_type(path)
+
     def send_head(self):
-        chemin = self.path.split("?", 1)[0].split("#", 1)[0]
+        chemin = self.chemin()
         if CHEMINS_SCANNERS.match(chemin):
             self.send_error(418)
             return None
@@ -70,6 +99,17 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_error(404)
             return None
 
+        # Comme le « internal » de nginx : les pages d'erreur ne s'ouvrent pas directement
+        if premier == "erreurs":
+            self.send_error(404)
+            return None
+
+        if chemin in ("/", "/index.html"):
+            corps = (RACINE / "index.html").read_text(encoding="utf-8")
+            corps = corps.replace("__FORMSPREE_ENDPOINT__", FORMSPREE).encode("utf-8")
+            self.envoyer(200, corps)
+            return None
+
         return super().send_head()
 
     def list_directory(self, path):
@@ -77,26 +117,23 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_error(404)
         return None
 
-    def dossier_erreurs(self):
-        """erreurs/ pour le site français, en/errors/ sous /en/."""
-        chemin = self.path.split("?", 1)[0].split("#", 1)[0]
-        if chemin == "/en" or chemin.startswith("/en/"):
-            return DOSSIER_ERREURS_EN
-        return DOSSIER_ERREURS
-
-    def send_error(self, code, message=None, explain=None):
-        page = self.dossier_erreurs() / f"{code}.html"
-        if not page.is_file():
-            return super().send_error(code, message, explain)
-
-        corps = page.read_bytes()
+    def envoyer(self, code, corps, message=None):
         self.send_response(code, message)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(corps)))
-        self.send_header("Connection", "close")
         self.end_headers()
         if self.command != "HEAD":
             self.wfile.write(corps)
+
+    def send_error(self, code, message=None, explain=None):
+        page = DOSSIER_ERREURS / f"{code}.html"
+        if not page.is_file():
+            return super().send_error(code, message, explain)
+
+        texte = page.read_text(encoding="utf-8")
+        texte = BALISE_IP.sub(html.escape(self.client_address[0]), texte)
+        self.close_connection = True
+        self.envoyer(code, texte.encode("utf-8"), message)
 
 
 def main():
