@@ -7,10 +7,12 @@ Ce fichier répertorie les licences des composants tiers utilisés par le projet
 #### Font 1
 Name: *Orbitron*
 Author: *Matt McInerney*
+Copyright: *Copyright 2018 The Orbitron Project Authors (https://github.com/theleagueof/orbitron), with Reserved Font Name: "Orbitron".*
 
 #### Font 2
 Name: *Space Mono*
 Author: *Colophon Foundry*
+Copyright: *Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono)*
 
 -———————————————————————
 
