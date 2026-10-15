@@ -7,8 +7,8 @@ Site statique (HTML, CSS, JavaScript sans dépendance) servi par nginx dans Dock
 ## Déploiement
 
 ```sh
-git clone https://github.com/raph-dot-img/JBC_Portfolio.git
-cd JBC_Portfolio
+git clone https://github.com/raph-dot-img/portfolio_de_jb.git
+cd portfolio_de_jb
 cp .env.example .env   # puis remplir les valeurs (FRP + Formspree)
 docker compose up -d
 ```
