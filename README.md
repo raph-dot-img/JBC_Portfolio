@@ -30,3 +30,5 @@ Serveur de développement uniquement : il reproduit les pages d'erreur, la page 
 ## Licences
 Ce projet est distribué sous la licence **MIT**. Consultez le fichier [LICENSE](LICENSE) pour les détails.
 Des licences de composants tiers sont utilisées par le projet (tels que les polices d'écriture). Voir [THIRD_PARTY_NOTICE.md](THIRD_PARTY_NOTICE.md) et la page [CGU.html](CGU.html).
+
+:)
