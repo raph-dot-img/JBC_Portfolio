@@ -992,6 +992,32 @@ main {
   caret-color: var(--jaune);
 }
 
+/* Faux kernel panic (rm -rf /) : il ne reste que l'écran noir */
+.panique body > :not(.ecran-panique) {
+  display: none;
+}
+
+.panique body {
+  background: #000;
+}
+
+.panique body::after {
+  display: none;
+}
+
+.ecran-panique {
+  margin: 0;
+  padding: 1rem;
+  min-height: 100vh;
+  background: #000;
+  color: #d8d8d8;
+  font-family: var(--police-texte);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 /* --------------------------------------------------------------------------
    Responsive
    -------------------------------------------------------------------------- */
