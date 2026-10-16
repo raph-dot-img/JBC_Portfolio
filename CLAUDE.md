@@ -12,7 +12,7 @@ Le contenu vient de son CV : `assets/CV_Jean-Baptiste_CAIGNEC.pdf`. Tout le site
 - Polices auto-hébergées : Orbitron (titres, variable 400-900) et Space Mono (texte, 400 seulement) dans `assets/polices/`, sous licence OFL.
 - Le logo `assets/logo_nobg.svg` (lettres noires) est utilisé comme masque CSS (`.logo`) et coloré en jaune.
 - Noms de classes, d'id et commentaires en français.
-- Easter egg : faux terminal caché (`script.js`), ouvert par la touche 7 / è / ` ou T hors des champs de saisie. Ses fichiers `cat` relisent le texte des sections de `index.html` : rien à mettre à jour en double.
+- Easter egg : faux terminal caché (`script.js`), ouvert par la touche 7 / è / ` ou T hors des champs de saisie. `rm` retire une section jusqu'au rechargement, `rm -rf /` affiche un faux kernel panic. Ses fichiers `cat` relisent le texte des sections de `index.html` : rien à mettre à jour en double.
 
 ## Contraintes à respecter
 

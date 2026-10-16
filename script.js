@@ -173,13 +173,14 @@ if (formulaire) {
     "  whoami          qui est derrière ce portfolio ?",
     "  ls              liste les fichiers",
     "  cat <fichier>   affiche le contenu d'un fichier",
+    "  rm <fichier>    supprime un fichier (et la section de la page)",
     "  fastfetch       informations sur le système",
     "  clear           efface l'écran",
     "  shutdown        ferme le terminal (poweroff, exit... marchent aussi)",
   ].join("\n");
 
   const FERMETURE = ["shutdown", "poweroff", "halt", "reboot", "exit", "logout"];
-  const COMMANDES = ["help", "whoami", "ls", "cat", "fastfetch", "clear", "su", "sudo", ...FERMETURE];
+  const COMMANDES = ["help", "whoami", "ls", "cat", "rm", "fastfetch", "clear", "su", "sudo", ...FERMETURE];
 
   let voile, corps, sortie, saisie;
   let focusPrecedent = null;
@@ -198,6 +199,67 @@ if (formulaire) {
     saisie.blur();
     voile.hidden = true;
     if (focusPrecedent && focusPrecedent.focus) focusPrecedent.focus();
+  };
+
+  // Accepte le nom avec ou sans « .txt »
+  const trouverFichier = (nom) => (FICHIERS[nom] ? nom : FICHIERS[nom + ".txt"] ? nom + ".txt" : null);
+
+  // rm : la section disparaît de la page (et son lien du menu) jusqu'au
+  // rechargement
+  const supprimer = (fichier) => {
+    const id = FICHIERS[fichier];
+    delete FICHIERS[fichier];
+    document.getElementById(id)?.remove();
+    document.querySelectorAll('a[href="#' + id + '"]').forEach((lien) => lien.remove());
+  };
+
+  // rm -rf / : tout disparaît, puis faux kernel panic. Une touche ou un clic
+  // recharge la page.
+  const PANIQUE = [
+    "[   13.371337] systemd[1]: Caught <SEGV>, core dump failed (child 1, code=killed, status=11/SEGV).",
+    "[   13.371402] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000b00",
+    "[   13.371455] CPU: 0 PID: 1 Comm: systemd Not tainted 6.6.6-ciel #1",
+    "[   13.371489] Hardware name: Lycée Likès CIEL, BIOS 2026",
+    "[   13.371502] Call Trace:",
+    "[   13.371510]  <TASK>",
+    "[   13.371522]  dump_stack_lvl+0x48/0x70",
+    "[   13.371537]  panic+0x1a6/0x370",
+    "[   13.371549]  do_exit.cold+0x15/0x15",
+    "[   13.371561]  </TASK>",
+    "[   13.371602] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000b00 ]---",
+    "",
+    "Appuyez sur une touche pour redémarrer.",
+  ].join("\n");
+
+  const paniquer = () => {
+    const ecran = document.createElement("pre");
+    ecran.className = "ecran-panique";
+    ecran.setAttribute("role", "alert");
+    ecran.textContent = PANIQUE;
+    document.body.append(ecran);
+    document.documentElement.classList.add("panique");
+    const redemarrer = () => window.location.reload();
+    setTimeout(() => {
+      document.addEventListener("keydown", redemarrer);
+      document.addEventListener("click", redemarrer);
+    }, 500);
+  };
+
+  const toutSupprimer = () => {
+    saisie.disabled = true;
+    const etapes = ["/bin", "/boot", "/etc", "/home/jb", "/usr", "/var", ...Object.keys(FICHIERS)];
+    let i = 0;
+    const suivant = () => {
+      if (i < etapes.length) {
+        const etape = etapes[i++];
+        if (FICHIERS[etape]) supprimer(etape);
+        ecrire("rm: suppression de '" + etape + "'");
+        setTimeout(suivant, mouvementReduit ? 0 : 120);
+      } else {
+        setTimeout(paniquer, mouvementReduit ? 0 : 400);
+      }
+    };
+    suivant();
   };
 
   // Recopie la ligne tapée derrière l'invite, comme un vrai terminal
@@ -228,9 +290,23 @@ if (formulaire) {
     } else if (commande === "cat") {
       if (!args.length) ecrire("cat : opérande manquant", "erreur-cmd");
       args.forEach((nom) => {
-        const fichier = FICHIERS[nom] ? nom : FICHIERS[nom + ".txt"] ? nom + ".txt" : null;
+        const fichier = trouverFichier(nom);
         if (fichier) ecrire(lireSection(FICHIERS[fichier]));
         else ecrire("cat: " + nom + ": Aucun fichier ou dossier de ce nom", "erreur-cmd");
+      });
+    } else if (commande === "rm") {
+      const options = args.filter((a) => a.startsWith("-")).join("");
+      const cibles = args.filter((a) => !a.startsWith("-"));
+      if (cibles.some((c) => c === "/" || c === "/*") && /r/i.test(options)) {
+        toutSupprimer();
+        return;
+      }
+      if (!cibles.length) ecrire("rm : opérande manquant", "erreur-cmd");
+      cibles.forEach((nom) => {
+        const fichiers = nom === "*" || nom === "*.txt" ? Object.keys(FICHIERS) : [trouverFichier(nom)];
+        if (fichiers[0]) fichiers.forEach(supprimer);
+        else if (nom === "/" || nom === "/*") ecrire("rm: impossible de supprimer '" + nom + "': est un dossier", "erreur-cmd");
+        else ecrire("rm: impossible de supprimer '" + nom + "': Aucun fichier ou dossier de ce nom", "erreur-cmd");
       });
     } else if (commande === "fastfetch" || commande === "neofetch") {
       ecrire(fastfetch());
