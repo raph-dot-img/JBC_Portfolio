@@ -93,7 +93,7 @@ if (formulaire) {
 }
 
 // --------------------------------------------------------------------------
-// Easter egg : faux terminal caché, ouvert par la touche 7 / è / ` (même
+// Easter egg : faux terminal caché, ouvert par la touche T ou 7 / è / ` (même
 // touche sur un clavier AZERTY). Rien n'existe dans la page avant l'appui.
 // --------------------------------------------------------------------------
 (() => {
@@ -355,7 +355,7 @@ if (formulaire) {
   document.addEventListener("keydown", (e) => {
     // AltGr compte comme Ctrl+Alt sous Windows : seul Ctrl (ou Cmd) annule.
     if (e.defaultPrevented || e.metaKey || (e.ctrlKey && !e.altKey)) return;
-    const touche = ["7", "è", "`"].includes(e.key) || (e.key === "Dead" && e.code === "Digit7");
+    const touche = ["7", "è", "`", "t", "T"].includes(e.key) || (e.key === "Dead" && e.code === "Digit7");
     if (!touche || (voile && !voile.hidden)) return;
     if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
     e.preventDefault();

@@ -855,7 +855,7 @@ main {
 }
 
 /* --------------------------------------------------------------------------
-   Terminal caché (easter egg) : créé par script.js, touche 7 / è / `
+   Terminal caché (easter egg) : créé par script.js, touches T et 7 / è / `
    -------------------------------------------------------------------------- */
 .terminal-voile {
   position: fixed;
